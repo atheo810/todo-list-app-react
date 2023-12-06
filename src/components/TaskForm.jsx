@@ -4,24 +4,10 @@ import "./TaskForm.css";
 import { useState } from "react";
 
 export default function TaskForm() {
-  // handle task input
-  // const [task, setTask] = useState("");
-  // const [status, setStatus] = useState("todo");
-
-  // function task input
-  // function handleTaskChange(e) {
-  //   setTask(e.target.value);
-  // }
-
-  // function handleStatusChange(e) {
-  //   setStatus(e.target.value);
-  // }
-
-  // console.log(task);
-
   const [taskData, setTaskData] = useState({
     task: "",
     status: "todo",
+    tags: [],
   });
   function handleChange(e) {
     const { name, value } = e.target;
@@ -35,6 +21,21 @@ export default function TaskForm() {
     e.preventDefault();
     console.log(taskData);
   }
+
+  function selectTag(tag) {
+    if (taskData.tags.some((item) => item === tag)) {
+      const filterTags = taskData.tags.filter((item) => item !== tag);
+      setTaskData((prev) => {
+        return { ...prev, tags: filterTags };
+      });
+    } else {
+      setTaskData((prev) => {
+        return { ...prev, tags: [...prev.tags, tag] };
+      });
+    }
+  }
+
+  console.log(taskData.tags);
   return (
     <header className="app_header">
       <form action="" onSubmit={handleSubmit}>
@@ -48,10 +49,10 @@ export default function TaskForm() {
         />
         <div className="task_form_bottom_line">
           <div>
-            <Tag tagName="HTML" />
-            <Tag tagName="CSS" />
-            <Tag tagName="JavaScript" />
-            <Tag tagName="React" />
+            <Tag tagName="HTML" selectTag={selectTag} />
+            <Tag tagName="CSS" selectTag={selectTag} />
+            <Tag tagName="JavaScript" selectTag={selectTag} />
+            <Tag tagName="React" selectTag={selectTag} />
           </div>
           <div>
             <select
